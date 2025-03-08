@@ -23,7 +23,10 @@ jobs:
       - name: Setup .env file
         run: |
             touch .env
-            echo "${{secrets.ENV_FILE}}" >> .env
+            echo "PORT=3001" >> .env
+            echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env
+            echo "TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }}" >> .env
+            echo "SECRET=${{ secrets.SECRET }}" >> .env
       - name: Install dependencies
         run: npm install
       - name: Check style
