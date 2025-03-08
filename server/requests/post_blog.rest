@@ -1,0 +1,33 @@
+POST http://localhost:3001/api/blogs HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld1VzZXIiLCJpZCI6IjY3MzQ5MGI3Zjk1MTRjYTMyYTQ1NjE4YiIsImlhdCI6MTczMTUwNTkxMCwiZXhwIjoxNzMxNTA5NTEwfQ.52XulE2P_BC8xjHfeXFVD-8JoHxUdpvd5Xbnfha7bUg
+
+{
+    "title": "My second blog",
+    "author": "Dave",
+    "url": "/blogs/0/2",
+    "likes": 0
+}
+
+###
+
+POST http://localhost:3001/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "My second blog",
+    "author": "Dave",
+    "url": "/blogs/0/2",
+    "likes": 0
+}
+
+###
+
+POST http://localhost:3001/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "author": "Dave",
+    "url": "/blogs/0/2",
+    "likes": 0
+}
