@@ -3,7 +3,7 @@ name: Deployment Pipeline
 on:
   push:
     branches:
-      - main
+      - master
 
 env:
   SKIP_DEPLOY_TAG: ${{ contains( join(github.event.commits.*.message), '#skip' ) }}
@@ -12,3 +12,13 @@ jobs:
   run_tests:
     uses: ./.github/workflows/test.yml
 
+  deploy:
+    needs: 
+      - run_tests
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy 
+        if: ${{ env.SKIP_DEPLOY_TAG == 'false' }} 
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}     
