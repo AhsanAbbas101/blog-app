@@ -1,0 +1,39 @@
+name: Test
+
+on:
+  workflow_call:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+  
+  
+jobs:
+  testing_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm install
+      - name: Check style
+        run: npm run lint
+      - name: Build project
+        run: npm run build
+      - name: Test server
+        run: npm run test:server
+      - name: Test client
+        run: npm run test:client
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: e2e tests
+        run: npm run test:e2e
+
+
+  

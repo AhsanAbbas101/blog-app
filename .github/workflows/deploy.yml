@@ -1,0 +1,14 @@
+name: Deployment Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  SKIP_DEPLOY_TAG: ${{ contains( join(github.event.commits.*.message), '#skip' ) }}
+
+jobs:
+  run_tests:
+    uses: ./.github/workflows/test.yml
+
