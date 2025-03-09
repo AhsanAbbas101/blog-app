@@ -108,3 +108,8 @@ dist
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
