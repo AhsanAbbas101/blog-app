@@ -13,13 +13,26 @@ jobs:
     uses: ./.github/workflows/test.yml
     secrets: inherit
   
-  deploy:
+  tag_and_deploy:
     needs: 
       - run_tests
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Generate Tag
+        id: step_generate_tag
+        uses: anothrNick/github-tag-action@1.71.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          WITH_V: true
+          DRY_RUN: false      
       - name: Deploy 
         if: ${{ env.SKIP_DEPLOY_TAG == 'false' }} 
-        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}     
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_MESSAGE: 'A new version `${{ steps.step_generate_tag.outputs.tag }}` realased.' 
