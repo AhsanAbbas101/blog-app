@@ -11,7 +11,8 @@ env:
 jobs:
   run_tests:
     uses: ./.github/workflows/test.yml
-
+    secrets: inherit
+  
   deploy:
     needs: 
       - run_tests
