@@ -17,6 +17,7 @@ jobs:
     needs: 
       - run_tests
     runs-on: ubuntu-20.04
+    if: ${{ success() }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,8 +37,15 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_MESSAGE: 'A new version `${{ steps.step_generate_tag.outputs.tag }}` realased. Deployment URL: ${{ vars.DEPLOY_URL }}' 
-      - name: Job Failure
-        if: ${{ failure() }}
+
+  notify_failure:
+    needs:
+      - run_tests
+      - tag_and_deploy
+    if: ${{ failure() }}
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Notify
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
