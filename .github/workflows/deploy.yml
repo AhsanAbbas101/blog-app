@@ -35,4 +35,10 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_MESSAGE: 'A new version `${{ steps.step_generate_tag.outputs.tag }}` realased.' 
+          SLACK_MESSAGE: 'A new version `${{ steps.step_generate_tag.outputs.tag }}` realased. Deployment URL: ${{ vars.DEPLOY_URL }}' 
+      - name: Job Failure
+        if: ${{ failure() }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_MESSAGE: 'Deployment pipeline failed for commit ${{ github.event.head_commit.url }} by author ${{ github.event.head_commit.committer.username }}' 

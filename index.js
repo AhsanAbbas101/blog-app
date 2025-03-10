@@ -13,7 +13,7 @@ const app = express()
 app.use('/api', (req, res, next) => require('@root/server')(req, res, next)) // eslint-disable-line
 
 app.use('/version', (req, res) => {
-  res.send('5')
+  res.send('6') 
 })
 
 /**
